@@ -1,0 +1,8 @@
+# python
+__pycache__/
+# uv
+/.venv
+/.python-version
+
+# dotenv
+/.env
