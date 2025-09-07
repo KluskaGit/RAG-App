@@ -1,10 +1,9 @@
 import streamlit as st
-from pydantic import BaseModel
 
-class Chat(BaseModel):
-    # Initialize chat history
-    def model_post_init(self, __context=None):
+class Chat():
+    def __init__(self):
         st.title("SGGW chat bot!")
+        # Initialize chat history
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
@@ -15,7 +14,6 @@ class Chat(BaseModel):
                 st.markdown(message["content"])
 
     def chat(self):
-
         self.display_history()
         # Accept user input
         if prompt := st.chat_input("What is up?"):
@@ -27,7 +25,8 @@ class Chat(BaseModel):
 
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
-                response = st.write('Hi')
+                response ='Hi'
+                st.write(response)
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": response})
 
