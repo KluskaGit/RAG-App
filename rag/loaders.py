@@ -1,13 +1,15 @@
-from bs4 import SoupStrainer
+from bs4.filter import SoupStrainer
 from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, WebBaseLoader
 from langchain_core.documents import Document
+from typing import List
 
 
-def load_pdf(path: str) -> list[Document]:
+
+def load_pdf(path: str) -> List[Document]:
     loader = PyPDFLoader(file_path=path)
     return loader.load()
 
-# def load_sites(links: list[str]) -> list[Document]:
+# def load_sites(links: List[str]) -> List[Document]:
 #     bs4_strainer = SoupStrainer(class_=("post-title", "post-header", "post-content"))
 #     loader = WebBaseLoader(
 #         web_paths=links,
@@ -16,7 +18,7 @@ def load_pdf(path: str) -> list[Document]:
 #     return loader.load()
 
 
-def load_file(path: str) -> list[Document]:
+def load_file(path: str) -> List[Document]:
     if path.endswith(".pdf"):
         return load_pdf(path)
     else:

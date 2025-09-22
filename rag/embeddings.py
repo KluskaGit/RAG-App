@@ -1,27 +1,37 @@
-from sentence_transformers import SentenceTransformer
+import huggingface_hub
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.documents import Document
 
-class Embedder:
-    '''
-    Embedder using SentenceTransformer model.
-    Default model is 'intfloat/multilingual-e5-base' which supports multiple languages.'
-    For e5 models, prepend "passage: " to passages and "query: " to queries.
-
-    Args:
-        model: str - The name of the SentenceTransformer model to use.
-    '''
-    def __init__(self, model: str='intfloat/multilingual-e5-base'):
-        self.model = model
-        self.transformer = SentenceTransformer(model)
+import ollama
 
 
-    def embed_texts(self, chunks: list[Document]):
-        texts = [doc.page_content for doc in chunks]
-        if 'e5' in self.model.lower():
-            texts = [f"passage: {doc.page_content}" for doc in chunks]
-        return self.transformer.encode(texts)
+model_name = "intfloat/multilingual-e5-base"
+embeddings = HuggingFaceEmbeddings(model_name=model_name)
 
-    def embed_query(self, query: str):
-        if 'e5' in self.model.lower():
-            query = f"query: {query}"
-        return self.transformer.encode([query])
+def save_to_vector_store(documents: list[Document]):
+
+    # if 'e5' in model_name.lower():
+    #     for doc in documents:
+    #         doc.page_content = f'passage: {doc.page_content}'
+    vector_store = Chroma.from_documents(
+        documents=documents,
+        embedding=embeddings,
+        persist_directory="../vectordb",
+    )
+
+    return vector_store
+
+
+def load_chroma(path: str):
+    return Chroma(persist_directory=path, embedding_function=embeddings)
+
+
+def generate(query: str, prompt: str):
+    response = ollama.chat(
+        model='hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF',
+        messages = [
+            {'role': 'system', 'content': prompt},
+            {'role': 'user', 'content': query}]
+    )
+    return response
