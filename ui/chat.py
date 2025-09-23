@@ -1,5 +1,5 @@
 import streamlit as st
-
+from rag.pipeline import pipe
 class Chat():
     def __init__(self):
         st.title("SGGW chat bot!")
@@ -25,7 +25,7 @@ class Chat():
 
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
-                response ='Hi'
+                response = pipe(query=prompt)
                 st.write(response)
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": response})
