@@ -6,9 +6,9 @@ class FileLoader:
     def load_pdf(self, path: str) -> list[Document]:
         reader = PdfReader(path)
         documents: list[Document] = []
-        for page in reader.pages:
+        for page_num, page in enumerate(reader.pages):
             text = page.extract_text()
-            documents.append(Document(text=text))
+            documents.append(Document(text=text, metadata={"source": path, "page": page_num + 1}))
 
         return documents
     
