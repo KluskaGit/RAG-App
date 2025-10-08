@@ -1,4 +1,5 @@
 import tiktoken
+from rag.schemas.document import Document
 
 class TokenTextSplitter:
     def __init__(
@@ -25,3 +26,19 @@ class TokenTextSplitter:
 
         return chunks
 
+
+    
+    def split_documents(self, documents: list[Document]) -> list[Document]:
+        chunks: list[Document] = []
+
+        for doc in documents:
+            tokens = self.enc.encode(doc.text)
+            start = 0
+
+            while start < len(tokens):
+                end = start + self.chunk_size
+                chunk = self.enc.decode(tokens[start:end])
+                chunks.append(Document(text=chunk, metadata=doc.metadata))
+                start = end - self.overlap
+
+        return chunks
