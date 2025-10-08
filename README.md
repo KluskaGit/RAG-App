@@ -1,1 +1,1 @@
-# SGGW-chat-bot
+# RAG-App
