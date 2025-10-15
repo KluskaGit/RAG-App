@@ -1,19 +1,25 @@
 import os
-from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
 
 from rag.loaders import FileLoader
 from rag.splitters import TokenTextSplitter
+from rag.embeddings.custom_embedding import CustomEmbedding
 from rag.vectorstore import VectorStore
 
 class Pipeline:
     def __init__(
             self,
+            api_key: str,
             embedding_model_name: str = "sentence-transformers/all-mpnet-base-v2"
         ):
         self.loader = FileLoader()
         self.splitter = TokenTextSplitter(chunk_size=500, overlap=150)
-        self.huggingface_ef = SentenceTransformerEmbeddingFunction(
-            model_name=embedding_model_name
+        # self.huggingface_ef = SentenceTransformerEmbeddingFunction(
+        #     model_name=embedding_model_name
+        # )
+
+        self.huggingface_ef = CustomEmbedding(
+            model_name=embedding_model_name,
+            api_key=api_key
         )
         self.vectoreStore = VectorStore('documents', 'vectordb', embedding=self.huggingface_ef)
 
@@ -38,4 +44,3 @@ class Pipeline:
         else:
             metadata = []
         return context, metadata
-        
