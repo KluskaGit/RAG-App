@@ -1,8 +1,15 @@
+import os
 import streamlit as st
-from rag.pipeline import pipe
+import ollama
+from openai import OpenAI
+from dotenv import load_dotenv
+
+from rag.pipeline import Pipeline
+
 class Chat():
     def __init__(self):
-        st.title("SGGW chat bot!")
+        load_dotenv()
+        st.title("RAG App")
         # Initialize chat history
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -13,7 +20,7 @@ class Chat():
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    def chat(self):
+    def start(self):
         self.display_history()
         # Accept user input
         if prompt := st.chat_input("What is up?"):
@@ -25,10 +32,26 @@ class Chat():
 
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
-                response = pipe(query=prompt)
-                st.write(response)
+                pipe = Pipeline()
+                context, metadata = pipe.generate_response(query=prompt)
+                system_prompt = f"""
+                    You are a helpful chatbot.
+                    Use only the following pieces of context to answer the question. Don't make up any new information:
+                    {context}
+                """
+                client = OpenAI(
+                    base_url="https://router.huggingface.co/v1",
+                    api_key=os.environ["HF_TOKEN"],
+                )
+                
+                response = client.chat.completions.create(
+                    model="openai/gpt-oss-20b:nebius",
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": f"Answer the question based on the context: {prompt}"},
+                    ]
+                )
+                message = response.choices[0].message.content
+                st.write(message, metadata)
             # Add assistant response to chat history
-            st.session_state.messages.append({"role": "assistant", "content": response})
-
-
-    
+            st.session_state.messages.append({"role": "assistant", "content": message})
