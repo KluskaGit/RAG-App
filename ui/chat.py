@@ -32,8 +32,13 @@ class Chat():
 
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
-                pipe = Pipeline()
+                pipe = Pipeline(
+                    embedding_model_name="google/embeddinggemma-300m",
+                    api_key=os.environ["HF_TOKEN"]
+                )
+                pipe.save_data('data')
                 context, metadata = pipe.generate_response(query=prompt)
+                print(context)
                 system_prompt = f"""
                     You are a helpful chatbot.
                     Use only the following pieces of context to answer the question. Don't make up any new information:
