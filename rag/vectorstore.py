@@ -2,6 +2,7 @@ import chromadb
 import uuid
 from chromadb.api.types import EmbeddingFunction, Metadata, QueryResult
 from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
+
 from rag.schemas.document import Document
 
 class VectorStore:
