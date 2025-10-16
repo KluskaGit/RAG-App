@@ -12,6 +12,7 @@ dependencies = [
     "langchain>=0.3.27",
     "numpy>=2.3.3",
     "ollama>=0.5.3",
+    "openai>=2.3.0",
     "pydantic>=2.11.7",
     "pypdf>=6.0.0",
     "sentence-transformers>=5.1.0",
