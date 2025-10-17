@@ -1,0 +1,24 @@
+# RAG Configuration File
+
+retriever:
+  provider: ollama
+  ollama_base_url: http://localhost:11434
+  model: jeffh/intfloat-multilingual-e5-large-instruct:f32
+
+LLM:
+  model: openai/gpt-oss-20b:nebius
+  base_url: https://router.huggingface.co/v1
+  api_key: OPENAI_API_KEY # <-- Read from environment variable
+
+vectorstore:
+  chroma_client: local # local or cloud. Local -> HTTP client, Cloud -> Cloud client
+  collection_name: documents
+  
+  # For local Chroma instance
+  host: localhost
+  port: 8000
+
+  # For Chroma Cloud instance
+  tenant: your-tenant-id
+  database: your-database-name
+  api_key: CHROMA_CLOUD_API_KEY # <-- Read from environment variable
