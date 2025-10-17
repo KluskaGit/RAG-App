@@ -1,21 +1,36 @@
-import chromadb
 import uuid
+from abc import ABC, abstractmethod
+from chromadb.api import ClientAPI
 from chromadb.api.types import EmbeddingFunction, Metadata, QueryResult
 from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 
 from rag.schemas.document import Document
 
-class VectorStore:
+class VectorStore(ABC):
+    """
+        Base class for ChromaDB vector store clients
+
+        Args:
+            collection_name (str): Name of the collection to use in ChromaDB
+            embedding (EmbeddingFunction, optional): Embedding function to use. 
+                Defaults to DefaultEmbeddingFunction().
+    """
 
     def __init__(
             self,
             collection_name: str,
-            persist_directory: str,
             embedding: EmbeddingFunction = DefaultEmbeddingFunction(),
         ):
 
-        self.client = chromadb.PersistentClient(path=persist_directory)
+        self.client = self._create_client()
         self.collection = self.client.get_or_create_collection(name=collection_name, embedding_function=embedding)
+
+    @abstractmethod
+    def _create_client(self) -> ClientAPI:
+        """
+            Returns a ChromaDB client
+        """
+        pass
 
     def save_texts(
             self,

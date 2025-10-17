@@ -33,11 +33,11 @@ class Chat():
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
                 pipe = Pipeline(
-                    embedding_model_name="google/embeddinggemma-300m",
-                    api_key=os.environ["HF_TOKEN"]
+                    embedding_model_name="jeffh/intfloat-multilingual-e5-large-instruct:f32",
+                    #api_key=os.environ["HF_TOKEN"]
                 )
                 pipe.save_data('data')
-                context, metadata = pipe.generate_response(query=prompt)
+                context, metadata = pipe.generate_context(query=prompt)
                 print(context)
                 system_prompt = f"""
                     You are a helpful chatbot.
