@@ -1,4 +1,5 @@
 import tiktoken
+import hashlib
 from rag.schemas.document import Document
 
 class TokenTextSplitter:
@@ -30,14 +31,23 @@ class TokenTextSplitter:
     
     def split_documents(self, documents: list[Document]) -> list[Document]:
         chunks: list[Document] = []
+        hasher = hashlib.sha256()
 
         for doc in documents:
             tokens = self.enc.encode(doc.text)
             start = 0
-
+                
             while start < len(tokens):
                 end = start + self.chunk_size
                 chunk = self.enc.decode(tokens[start:end])
+
+                hasher.update(doc.text.encode('utf-8'))
+
+                if doc.metadata:
+                    doc.metadata['chunk_hash'] = hasher.hexdigest()
+                else:
+                    doc.metadata = {'chunk_hash': hasher.hexdigest()}
+                    
                 chunks.append(Document(text=chunk, metadata=doc.metadata))
                 start = end - self.overlap
 

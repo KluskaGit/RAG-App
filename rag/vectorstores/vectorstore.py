@@ -31,6 +31,13 @@ class VectorStore(ABC):
             Returns a ChromaDB client
         """
         pass
+    
+    def get_chunks_hashes(self) -> list[str] | None:
+        metadatas = self.collection.get(include=['metadatas']).get('metadatas', None)
+        if metadatas:
+            hashes: list[str] = [str(meta.get('chunk_hash', None)) for meta in metadatas]
+            return hashes
+        return None
 
     def save_texts(
             self,
@@ -47,11 +54,17 @@ class VectorStore(ABC):
     def save_documents(self, documents: list[Document]):
         texts: list[str] = []
         metadatas: list[Metadata] = []
-        for doc in documents:
-            texts.append(doc.text)
-            metadatas.append(doc.metadata if doc.metadata else {})
 
-        self.save_texts(texts, metadatas)
+        hashes = self.get_chunks_hashes() or []
+        for doc in documents:
+            if doc.metadata and doc.metadata.get('chunk_hash', None) in hashes:
+                continue
+            else:
+                metadatas.append(doc.metadata if doc.metadata else {})
+                texts.append(doc.text)
+
+        if texts and metadatas and len(texts) == len(metadatas):
+            self.save_texts(texts, metadatas)
 
     def similarity_search(
             self,

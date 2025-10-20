@@ -30,6 +30,8 @@ class Pipeline:
             embedding=embedding
         )
 
+        self.save_data(folder_path='data')
+        
     def save_data(self, folder_path: str) -> None:
         file_names: list[str] = os.listdir(folder_path)
 
