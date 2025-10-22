@@ -3,11 +3,11 @@ import yaml
 from openai import OpenAI
 from pathlib import Path
 from dotenv import load_dotenv
-from chromadb.utils.embedding_functions import OllamaEmbeddingFunction
 
 from rag.loaders import FileLoader
 from rag.splitters import TokenTextSplitter
 from rag.vectorstores.chroma_local import ChromaLocal
+from rag.embeddings.embedding import get_embedding_function
 
 class Pipeline:
     def __init__(self):
@@ -18,10 +18,7 @@ class Pipeline:
         with open(Path('appconfig.yaml'), 'r') as cfg:
             self.config = yaml.safe_load(cfg)
 
-        embedding = OllamaEmbeddingFunction(
-            url=self.config['retriever']['ollama_base_url'],
-            model_name=self.config['retriever']['model']
-        )
+        embedding = get_embedding_function(**self.config['retriever'])
 
         self.vectorStore = ChromaLocal(
             host = self.config['vectorstore']['host'],
