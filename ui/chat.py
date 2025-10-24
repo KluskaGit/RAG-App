@@ -33,6 +33,9 @@ class Chat():
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
                 message, metadata = self.pipe.generate_response(prompt)
-                st.write(message, metadata)
+                if message:
+                    for data in metadata:
+                        message += f"\n\nDocument: {data.get('source', 'No source available')}, page: {data.get('page', 'N/A')}"
+                st.write(message)
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": message})
