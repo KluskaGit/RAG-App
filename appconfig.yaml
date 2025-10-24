@@ -1,9 +1,22 @@
 # RAG Configuration File
 
 retriever:
+  # Example embedding model configuration with Ollama
+
+  # Available providers: openai, huggingface, ollama, cohere, google_palm, 
+  # google_vertex, google_generative_ai, instructor, jina, sentence_transformer, 
+  # amazon_bedrock, mistral, voyageai, together_ai, roboflow, text2vec, 
+  # openclip, morph, cloudflare_workers_ai, baseten, bm25, huggingface_sparse,
+  # fastembed_sparse, chroma_langchain, default.
+
   provider: ollama
-  ollama_base_url: http://localhost:11434
-  model: jeffh/intfloat-multilingual-e5-large-instruct:f32
+
+  # Below parameters must match the chosen embedding model provider. You can check them in chromadb documentation
+  # https://docs.trychroma.com/docs/embeddings/embedding-functions
+  
+  url: http://localhost:11434
+  model_name: jeffh/intfloat-multilingual-e5-large-instruct:f32
+  #api_key: RETRIEVER_API_KEY # <-- Read from environment variable
 
 LLM:
   model: openai/gpt-oss-20b:nebius
@@ -11,6 +24,7 @@ LLM:
   api_key: OPENAI_API_KEY # <-- Read from environment variable
 
 vectorstore:
+  # TODO
   chroma_client: local # local or cloud. Local -> HTTP client, Cloud -> Cloud client
   collection_name: documents
   
