@@ -1,3 +1,4 @@
+import os
 import chromadb.utils.embedding_functions as ef
 from chromadb.utils.embedding_functions import EmbeddingFunction
 from typing import Union
@@ -55,6 +56,13 @@ def get_embedding_function(**kwargs) -> Union[EmbeddingFunction, object]:
         provider = kwargs.pop("provider").lower()
     except KeyError:
         raise ValueError("The 'provider' argument is required.")
+    
+    if "api_key" in kwargs:
+        try:
+            kwargs["api_key"] = os.environ[kwargs["api_key"]]
+        except Exception as e:
+            raise ValueError(f"Error retrieving API key from environment: {e}")
+
     
     embedding_class = EMBEDDING_PROVIDERS.get(provider)
     
