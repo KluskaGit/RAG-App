@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from rag.loaders import FileLoader
 from rag.splitters import TokenTextSplitter
 from rag.vectorstores.chroma_local import ChromaLocal
+from rag.vectorstores.chroma_cloud import ChromaCloud
 from rag.embeddings.embedding import get_embedding_function
 
 class Pipeline:
@@ -20,12 +21,27 @@ class Pipeline:
 
         embedding = get_embedding_function(**self.config['retriever'])
 
-        self.vectorStore = ChromaLocal(
-            host = self.config['vectorstore']['host'],
-            port = self.config['vectorstore']['port'],
-            collection_name = self.config['vectorstore']['collection_name'],
-            embedding=embedding
-        )
+        if self.config['vectorstore']['chroma_client'] == "local":
+            self.vectorStore = ChromaLocal(
+                host = self.config['vectorstore']['host'],
+                port = self.config['vectorstore']['port'],
+                collection_name = self.config['vectorstore']['collection_name'],
+                embedding=embedding
+            )
+        elif self.config['vectorstore']['chroma_client'] == "cloud":
+
+            if tenant:=self.config['vectorstore'].get('tenant', None):
+                tenant = os.environ[tenant]
+
+            self.vectorStore = ChromaCloud(
+                database = self.config['vectorstore']['database'],
+                api_key=os.environ[self.config['vectorstore']['api_key']],
+                tenant = tenant,
+                collection_name = self.config['vectorstore']['collection_name'],
+                embedding=embedding
+            )
+        else:
+            raise ValueError("Unsupported chroma client type in configuration.")
 
         self.save_data(folder_path='data')
         

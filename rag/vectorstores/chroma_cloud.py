@@ -1,7 +1,7 @@
 import chromadb
 from rag.vectorstores.vectorstore import VectorStore
 
-class ChromaLocal(VectorStore):
+class ChromaCloud(VectorStore):
     
     """
         ChromaDB Cloud vector store client
