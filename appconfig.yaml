@@ -15,7 +15,7 @@ retriever:
   # https://docs.trychroma.com/docs/embeddings/embedding-functions
   
   url: http://localhost:11434
-  model_name: hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:latest
+  model_name: jeffh/intfloat-multilingual-e5-large-instruct:f32
   #api_key: RETRIEVER_API_KEY # <-- Read from environment variable
 
 LLM:
