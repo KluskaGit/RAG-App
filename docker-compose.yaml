@@ -1,0 +1,63 @@
+services:
+
+  chroma:
+    image: chromadb/chroma:1.3.0
+    container_name: chroma
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v2/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - rag-network
+    
+  ollama:
+    image: ollama/ollama:0.12.7-rc0-rocm
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    # environment:
+    #   - ROC_ENABLE_PRE_VEGA=1
+    #   - HSA_OVERRIDE_GFX_VERSION=9.0.0
+    # devices:
+    #   - /dev/kfd:/dev/kfd
+    #   - /dev/dri:/dev/dri
+    # group_add:
+    #   - video
+    #   - render
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    entrypoint: ["/bin/sh", "-c"]
+    # command:
+    #   - |
+    #     ollama pull jeffh/intfloat-multilingual-e5-large-instruct:f32 &
+    #     sleep 5
+    #     ollama serve
+    #     wait
+    networks:
+      - rag-network
+
+  rag:
+    build: .
+    container_name: rag
+    ports:
+      - "8501:8501"
+    env_file: .env
+    depends_on:
+      chroma:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+    networks:
+      - rag-network
+
+networks:
+  rag-network:
+    driver: bridge
