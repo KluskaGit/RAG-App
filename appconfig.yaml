@@ -14,7 +14,7 @@ retriever:
   # Below parameters must match the chosen embedding model provider. You can check them in chromadb documentation
   # https://docs.trychroma.com/docs/embeddings/embedding-functions
   
-  url: ollama:11434
+  url: http://host.docker.internal:11434
   model_name: jeffh/intfloat-multilingual-e5-large-instruct:f32
   #api_key: RETRIEVER_API_KEY # <-- Read from environment variable
 
@@ -25,11 +25,11 @@ LLM:
 
 vectorstore:
   # TODO
-  chroma_client: cloud # local or cloud. Local -> HTTP client, Cloud -> Cloud client
+  chroma_client: local # local or cloud. Local -> HTTP client, Cloud -> Cloud client
   collection_name: documents
   
   # For local Chroma instance
-  host: chroma
+  host: chroma # <-- Use service name defined in docker-compose.yaml or localhost if running outside Docker
   port: 8000
 
   # For Chroma Cloud instance

@@ -1,0 +1,21 @@
+# environment files
+.venv/
+.env
+.env_template
+
+# chroma
+chroma/
+
+# data folder
+data/
+
+# git
+.git/
+.gitignore
+README.md
+
+# configuration files
+Dockerfile
+docker-compose.yaml
+.dockerignore
+appconfig.yaml
