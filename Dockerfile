@@ -1,16 +1,16 @@
 FROM python:3.13-slim
 
-WORKDIR /rag
+WORKDIR /app
 
-RUN pip install --no-cache-dir uv
+RUN pip install uv
 
 COPY pyproject.toml uv.lock ./
 
-RUN uv sync --frozen --no-dev
+RUN uv sync
 
 COPY . .
 
 EXPOSE 8501
 
-CMD ["uv", "run", "streamlit", "run", "main.py"]
+ENTRYPOINT ["uv", "run", "streamlit", "run", "main.py"]
 
