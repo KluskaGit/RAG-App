@@ -14,7 +14,7 @@ retriever:
   # Below parameters must match the chosen embedding model provider. You can check them in chromadb documentation
   # https://docs.trychroma.com/docs/embeddings/embedding-functions
   
-  url: http://host.docker.internal:11434
+  url: http://host.docker.internal:11434 # <-- Use http://localhost:11434 if running outside Docker
   model_name: jeffh/intfloat-multilingual-e5-large-instruct:f32
   #api_key: RETRIEVER_API_KEY # <-- Read from environment variable
 
