@@ -2,7 +2,7 @@
 
 My own Retrieval-Augmented Generation (RAG) application built with Python, featuring a Streamlit-based chat interface and ChromaDB vector storage. This application enables intelligent document querying using embeddings and LLMs.
 
-## 🌟 Features
+## Features
 
 - **Multi-Provider Embedding Support**: Compatible with 25+ embedding providers including OpenAI, Ollama, HuggingFace, Cohere, and more
 - **Flexible Vector Storage**: Supports both local and cloud ChromaDB instances
@@ -12,7 +12,7 @@ My own Retrieval-Augmented Generation (RAG) application built with Python, featu
 - **Token-Based Text Splitting**: Intelligent document chunking using tiktoken
 - **Document Metadata Tracking**: Maintains source and page information for citations
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -22,7 +22,7 @@ My own Retrieval-Augmented Generation (RAG) application built with Python, featu
 - [Architecture](#architecture)
 - [Development](#development)
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -40,7 +40,7 @@ git clone https://github.com/KluskaGit/RAG-App.git
 cd RAG-App
 ```
 
-2. **Install dependencies with uv**
+2. **Install dependencies with uv** (skip if you are using Docker)
 ```bash
 uv sync
 ```
@@ -53,7 +53,6 @@ RETRIEVER_API_KEY=your_retriever_api_key
 OPENAI_API_KEY=your_huggingface_token
 CHROMA_CLOUD_API_KEY=your_chroma_cloud_api_key
 TENANT_ID = your_tenant_id
-# Add other API keys as needed
 ```
 
 4. **Configure the application**
@@ -64,7 +63,7 @@ Edit `appconfig.yaml` to match your setup (see [Configuration](#configuration) s
 
 Place your PDF documents in the `data/` folder for indexing.
 
-## ⚙️ Configuration
+## Configuration
 
 The application is configured via `appconfig.yaml`. Here's a breakdown of the configuration options:
 
@@ -106,18 +105,28 @@ vectorstore:
   api_key: CHROMA_CLOUD_API_KEY
 ```
 
-## 🎯 Usage
+## Usage
 
-### Starting the Application
+### Starting the Application (Locally)
 
 1. **Run ChromaDB locally** (if using local mode):
 ```bash
 uv run chroma run
 ```
+2. **Run Ollama locally**
+```bash
+ollama pull <model name>
+ollama serve
+```
 
-2. **Start the Streamlit app**:
+4. **Start the Streamlit app**:
 ```bash
 uv run streamlit run main.py
+```
+
+### Starting the Application in Docker
+```bash
+docker compose up -d
 ```
 
 ### Using the Chat Interface
@@ -132,7 +141,7 @@ uv run streamlit run main.py
 1. Place PDF files in the `data/` folder
 2. Restart the application to index new documents
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 RAG-App/
@@ -163,7 +172,7 @@ RAG-App/
     └── chat.py                 # Streamlit chat interface
 ```
 
-## 🔌 Supported Embedding Providers
+## Supported Embedding Providers
 
 The application supports 25+ embedding providers:
 
@@ -183,7 +192,7 @@ The application supports 25+ embedding providers:
 
 See `rag/embeddings/embedding.py` for the complete list and documentation.
 
-## 🏗️ Architecture
+## Architecture
 
 ### RAG Pipeline Flow
 
@@ -219,7 +228,7 @@ See `rag/embeddings/embedding.py` for the complete list and documentation.
 - **Pipeline**: Orchestrates the entire RAG workflow
 - **Chat UI**: Streamlit-based interactive interface
 
-## 🛠️ Development
+## Development
 
 ### Text Splitting Configuration
 
@@ -245,7 +254,7 @@ The embedding factory automatically maps providers. Add new providers in `rag/em
 
 Create custom vector store implementations by extending the base interface in `rag/vectorstores/`.
 
-## 📝 Dependencies
+## Dependencies
 
 Key dependencies:
 - `chromadb` - Vector database
@@ -262,11 +271,11 @@ See `pyproject.toml` for complete dependency list.
 
 This project uses [uv](https://github.com/astral-sh/uv) for fast and reliable Python package management.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### ChromaDB Connection Issues
 - Ensure ChromaDB is running on the specified host/port
@@ -283,7 +292,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - Check file permissions in the `data/` folder
 - Verify sufficient disk space for indexing
 
-## 📧 Contact
+## Contact
 
 For questions or support, please open an issue on GitHub.
 
