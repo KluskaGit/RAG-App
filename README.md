@@ -127,6 +127,12 @@ uv run streamlit run main.py
 ```
 
 ### Starting the Application in Docker
+1. **Run Ollama locally**
+```bash
+ollama pull <model name>
+ollama serve
+```
+2. **Start the app**
 ```bash
 docker compose up -d
 ```
@@ -147,10 +153,12 @@ docker compose up -d
 
 ```
 RAG-App/
-├── main.py                      # Application entry point
-├── appconfig.yaml               # Configuration file
+├── main.py                     # Application entry point
+├── appconfig.yaml              # Configuration file
 ├── pyproject.toml              # Project dependencies
 ├── .env                        # Environment variables (create this)
+├── Dockerfile                  # Dockerfile with RAG app setup
+├── docker-compose.yaml         # Docker Compose configuration
 ├── data/                       # PDF documents to index
 ├── chroma/                     # Local ChromaDB storage
 ├── rag/                        # Core RAG functionality
