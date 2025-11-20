@@ -9,6 +9,9 @@ chroma/
 # data folder
 data/
 
+# screenshots
+images/
+
 # git
 .git/
 .gitignore

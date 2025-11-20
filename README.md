@@ -21,13 +21,15 @@ My own Retrieval-Augmented Generation (RAG) application built with Python, featu
 - [Supported Embedding Providers](#supported-embedding-providers)
 - [Architecture](#architecture)
 - [Development](#development)
+- [Results](#results)
+- [License](#license)
 
 ## Installation
 
 ### Prerequisites
 
 - Python 3.13 or higher
-- [uv](https://github.com/astral-sh/uv) - Fast Python package installer
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) - Fast Python package installer
 - [ChromaDB](https://trychroma.com) instance (local or cloud)
 - [Ollama](https://ollama.com/) (if using Ollama embeddings)
 - API keys for your chosen embedding and LLM providers
@@ -269,7 +271,14 @@ See `pyproject.toml` for complete dependency list.
 
 ### Package Management
 
-This project uses [uv](https://github.com/astral-sh/uv) for fast and reliable Python package management.
+This project uses [uv](https://docs.astral.sh/uv/getting-started/installation/) for fast and reliable Python package management.
+
+## Results
+
+![s1](images/s1.png)
+![s2](images/s2.png)
+![s3](images/s3.png)
+
 
 ## Contributing
 
@@ -291,6 +300,10 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - Ensure PDFs are not corrupted or password-protected
 - Check file permissions in the `data/` folder
 - Verify sufficient disk space for indexing
+
+## License
+
+This project is open source and available under the MIT License.
 
 ## Contact
 
