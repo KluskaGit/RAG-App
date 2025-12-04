@@ -12,12 +12,15 @@ from rag.embeddings.embedding import get_embedding_function
 
 class Pipeline:
     def __init__(self):
-        load_dotenv()
-        self.loader = FileLoader()
-        self.splitter = TokenTextSplitter(chunk_size=500, overlap=150)
 
+        load_dotenv()
         with open(Path('appconfig.yaml'), 'r') as cfg:
             self.config = yaml.safe_load(cfg)
+
+        self.loader = FileLoader()
+        self.splitter = TokenTextSplitter(
+            chunk_size=self.config['text-splitter']['chunk_size'],
+            overlap=self.config['text-splitter']['overlap'])
 
         embedding = get_embedding_function(**self.config['retriever'])
 
@@ -55,7 +58,7 @@ class Pipeline:
             self.vectorStore.save_documents(chunks)
 
     def generate_context(self, query: str) -> tuple[str, list]:
-        result = self.vectorStore.similarity_search(query=query)
+        result = self.vectorStore.similarity_search(query=query, k=self.config['text-splitter']['top_k'])
         if context:=result.get('documents', None):
             context = '\n'.join(context[0])
         else:

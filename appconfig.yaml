@@ -1,5 +1,10 @@
 # RAG Configuration File
 
+text-splitter:
+  chunk_size: 500
+  overlap: 150
+  top_k: 3
+
 retriever:
   # Example embedding model configuration with Ollama
 
