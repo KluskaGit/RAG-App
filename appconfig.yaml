@@ -19,7 +19,7 @@ retriever:
   #api_key: RETRIEVER_API_KEY # <-- Read from environment variable
 
 LLM:
-  model: openai/gpt-oss-20b:nebius
+  model: openai/gpt-oss-20b:groq
   base_url: https://router.huggingface.co/v1
   api_key: OPENAI_API_KEY # <-- Read from environment variable
 
