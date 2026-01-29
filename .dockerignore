@@ -16,6 +16,7 @@ images/
 .git/
 .gitignore
 README.md
+LICENSE
 
 # configuration files
 Dockerfile
