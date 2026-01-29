@@ -23,11 +23,11 @@ class Pipeline:
             overlap=self.config['text-splitter']['overlap'])
 
         embedding = get_embedding_function(**self.config['retriever'])
-
+        
         if self.config['vectorstore']['chroma_client'] == "local":
             self.vectorStore = ChromaLocal(
                 host = self.config['vectorstore']['host'],
-                port = self.config['vectorstore']['port'],
+                port = int(os.environ[self.config['vectorstore']['port']]),
                 collection_name = self.config['vectorstore']['collection_name'],
                 embedding=embedding
             )

@@ -8,9 +8,11 @@ COPY pyproject.toml uv.lock ./
 
 RUN uv sync
 
-COPY . .
+COPY /rag ./rag
+COPY /ui ./ui
+COPY main.py .
 
-EXPOSE 8501
+EXPOSE $STREAMLIT_SERVER_PORT
 
 ENTRYPOINT ["uv", "run", "streamlit", "run", "main.py"]
 
