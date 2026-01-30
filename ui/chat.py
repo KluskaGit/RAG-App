@@ -7,8 +7,9 @@ class Chat():
     def __init__(self):
         st.title("RAG App")
 
-        # Initialize Pipeline
-        self.pipe = Pipeline()
+        with st.spinner("Loading data..."):
+            # Initialize Pipeline
+            self.pipe = Pipeline()
 
         # Initialize chat history
         if "messages" not in st.session_state:
