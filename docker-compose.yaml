@@ -12,7 +12,7 @@ services:
       timeout: 5s
       retries: 3
     volumes:
-      - chroma_data:/data/
+      - chroma_data:/chroma/
     networks:
       - rag-network
 
